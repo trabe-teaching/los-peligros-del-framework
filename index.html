@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Los peligros del framework</title>
+  <link href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.css" rel="stylesheet" />
+
+  <style>
+    @font-face {
+      font-family: 'ASM-Regular';
+      src: url('fonts/31A5DC_3_0.eot') format('opentype'),
+           url('fonts/31A5DC_3_0.woff') format('woff'),
+           url('fonts/31A5DC_3_0.ttf') format('truetype');
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 4vh;
+      line-height: 5vh;
+      font-family: "ASM-Regular", sans-serif;
+    }
+
+    a {
+      color: #3333ff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #ff33cc;
+    }
+
+    small {
+      font-size: 60%;
+    }
+
+    .container {
+      scroll-snap-type: y mandatory;
+      height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+
+    section {
+      scroll-snap-align: start;
+      height: 100vh;
+      width: 100vw;
+      padding: 10vh 5vw;
+      display: flex;
+      flex-flow: column;
+      justify-content: start;
+      align-items: start;
+      text-align: center;
+    }
+
+    section.center,
+    section.cover--first,
+    section.disclaimer,
+    section.meme,
+    section.blue,
+    section.black {
+      justify-content: center;
+      align-items: center;
+    }
+
+    section.disclaimer {
+      color: #fff;
+      background-color: rgb(157, 41, 41);
+    }
+
+    section.blue {
+      color: #fff;
+      background-color: #3333ff;
+    }
+
+    section.blue a {
+      color: #fff;
+    }
+
+    section.blue a:hover {
+      color: #ff33cc;
+    }
+
+    section.black {
+      color: #fff;
+      background-color: #000;
+    }
+
+    section.cover {
+     flex-flow: row;
+     align-items: center
+    }
+
+    section.cover > * {
+      width: 35vw;
+    }
+
+    section.cover > * + * {
+      margin-left: 10vw;
+    }
+
+    section.cover > div {
+      display: flex;
+      flex-flow: column;
+    }
+
+    section.source {
+      background-color: #2d2d2d;
+    }
+
+    section.source pre {
+      text-align: left;
+      padding: 0 !important;
+      margin: 0 !important;
+      margin-top: -1em !important;
+      line-height: 1 !important;
+      font-size: 75% !important;
+    }
+
+    section.source.source--small pre {
+      line-height: 0.7 !important;
+    }
+
+    section.source pre code {
+      font-size: 70% !important;
+    }
+
+    section.source.source--small pre code {
+      font-size: 60% !important;
+    }
+
+    section.quote {
+      background-color: #eaeaea;
+      justify-content: center;
+    }
+
+    section.quote blockquote {
+      margin-left: 0;
+      text-align: left;
+      font-size: 90%;
+      line-height: 1.3;
+      margin: 4vh 0;
+    }
+
+    section.quote cite {
+      display: block;
+      font-style: normal;
+      font-size: 70%;
+      color: #666;
+      margin-top: 2vh;
+    }
+
+    section.quote em {
+      padding: 4px;
+      background-color: rgb(251, 234, 116);
+      font-style: normal;
+    }
+
+    code {
+      background-color: #ddd;
+      font-size: 90%;
+    }
+
+    img {
+      display: block;
+    }
+
+    h1 {
+      font-size: 9vh;
+      line-height: 10vh;
+    }
+
+    h2 {
+      font-size: 7vh;
+      line-height: 8vh;
+    }
+
+    h3 {
+      font-size: 5vh;
+      line-height: 8vh;
+    }
+
+    h1 + h2,
+    h2 + h3,
+    h3 + h2 {
+      margin-top: 8vh;
+    }
+
+    h2 + ul {
+      margin-top: 6vh;
+    }
+
+    ul {
+      text-align: left;
+    }
+
+    ul > li + li {
+      margin-top: 3vh;
+    }
+
+    ul ul {
+      margin-top: 3vh;
+      font-size: 70%;
+      line-height: 100%;
+    }
+
+    ul ul > li + li {
+      margin-top: 3vh;
+    }
+
+    #pagination {
+      position: fixed;
+      top: 2vh;
+      right: 2vw;
+      color: #444;
+      background-color: white;
+      font-size: 1vh;
+      line-height: 1vh;
+      padding: 0.5vh 0.25vw 0.2vh;
+    }
+
+    sup {
+      color: red;
+    }
+
+    section.full-image {
+      position: relative;
+    }
+
+    section.full-image img {
+      position: absolute;
+      width: 100vw;
+      max-height: 100vh;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    section.full-image h2 {
+      background: rgba(0,0,0,0.5);
+      position: absolute;
+      z-index: 2;
+      border-radius: 20px;
+      color: #ffff;
+      top: 50%;
+      left: 50%;
+      width: 60vw;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+  </style>
+</head>
+<body>
+  <div id="pagination"></div>
+  <div class="container">
+    <section class="cover--first" style="position: relative">
+      <h1>Trabe</h1>
+      <img src="assets/trabe-logo.png" alt="Trabe logo" style="height: 40vh; margin: 6vh 0"/>
+      <h2>Asís & David</h2>
+
+      <div style="position:absolute; bottom: 1vh; right: 1vw; padding: 1vh 1vw; background-color: #f0f0ea; font-size: 2vh; line-height: 2vh">
+        https://trabe-teaching.github.io/los-peligros-del-framework
+      </div>
+    </section>
+
+    <section class="blue">
+      <h1>Los peligros<sup>*</sup> del framework</h1>
+    </section>
+
+    <section>
+      <h2>Sobre nosotros</h2>
+      <ul>
+        <li>Desarrollamos front/back con JS (+15 años).</li>
+        <li>Desarrollamos frameworks para otros desarrolladores.</li>
+        <li>Hemos trabajado con multiples stacks y frameworks: RoR, JEE, .NET, PHP.</li>
+        <li>Entrevistamos candidatos, formamos en casa y a la competencia.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>La cruda realidad con el paso de los años, sin ánimo de generalizar</small></h2>
+      <ul>
+        <li>Los candidatos tien menos capacidad de resolver problemas, menos autonomía y son incapaces de arrancar proyectos de cero.</li>
+        <li>Se avanza más si es en base a copy-paste-modify.</li>
+        <li>Es necesario bajar el nivel de las pruebas técnicas</li>
+        <li>El mercado laboral permite encontrar trabajo aunque los skills no sean suficientes<sup>*</sup>.</li>
+        <li>Los años de experiencia son una métrica distorsionada<sup>*</sup>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Nuestro objetivo</h2>
+      <ul>
+        <li>Daros nuestra visión. La de una empresa que necesita desarrolladores para un trabajo de bajo nivel<sup>*</sup> y que no los encuentra.</li>
+      </ul>
+    </section>
+
+    <section class="disclaimer">
+      <h2>WARNING</h2>
+      <p style="margin-top: 2em">
+        Esta es nuestra opinión.
+      </p>
+      <p>
+        Y os puede parecer una 💩.
+      </p>
+    </section>
+
+
+    <section class="center">
+      <h2>¿A qué creemos que se debe esto?</h2>
+    </section>
+
+    <section class="full-image">
+      <h2>Cuando los dinosaurios reinaban sobre el planeta...</h2>
+      <img src="./assets/dinosaurs.jpg.webp" />
+    </section>
+
+    <section>
+      <ul>
+        <li>Aplicaciones nativas (CLIs, Text UIs, Windows).</li>
+        <li>Lenguajes bajo nivel, compiladores, ensamblador.</li>
+        <li>Librerías del lenguaje, de la distro o de un fabricante de software.</li>
+        <li>No hay internet: documentación con manuales y libros.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>
+        Era fácil<sup>*</sup> (y casi obligatorio<sup>*</sup>) conocer el detalle a bajo nivel de las cosas.
+      </h2>
+      <div style="display: flex; width: 100%; justify-content: center; flex-flow: row">
+        <img src="./assets/el-principito.jpg" style="height: 50vh"/>
+      </div>
+    </section>
+
+   <section class="source">
+      <pre><code class="language-c">
+// C
+int file = open("example.txt", O_RDONLY);
+
+struct stat file_info;
+fstat(file, &file_info);
+
+char *buffer = (char *)malloc(file_info.st_size + 1);
+
+read(file, buffer, file_info.st_size);
+buffer[file_info.st_size] = '\0';
+
+close(file);
+      </code></pre>
+    </section>
+
+    <section>
+      <h2>¿Qué ha pasado en los últimos 20 años? (I)</h2>
+      <ul>
+        <li>Boom de internet.</li>
+        <li>Más medios para distribuir software: escritorio, web, apps, etc.</li>
+        <li>Crecimiento exponencial de tecnologías.</li>
+        <li>Nuevos lenguajes de programación para simplificar (GC para no gestionar memoria).</li>
+        <li>Nuevos lenguajes para aislar del metal (Java VM).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>¿Qué ha pasado en los últimos 20 años? (II)</h2>
+      <ul>
+        <li>El framework como base: aislar del bajo nivel (incluso aislar del lenguaje).</li>
+        <li>El framework como opinión: aislar la toma de decisiones técnicas/arquitecturales.</li>
+        <li>Herramientas: pasa lo mismo que con los frameworks.</li>
+        <li>Auge del OSS: miles de librerías para usar.</li>
+        <li>Auge de blogs, stack overflow programming: la información es contradictoria o no 100% confiable.</li>
+      </ul>
+    </section>
+
+    <section class="source">
+      <pre><code class="language-js">
+const text = (await fs.readFile("some.txt")).toString();
+      </code></pre>
+    </section>
+
+    <section>
+      <h2>¿Problemas? Meta soluciones.</h2>
+      <ul>
+        <li>Demasiadas opciones. Aparecen los meta frameworks, los generadores de aplicaciones, etc.</li>
+        <li>Más opinión. Aleja de la toma de decisiones sobre frameworks/tooling/arquitectura.</li>
+        <li>Gut feeling. Inercia.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>
+        Es complicado conocer el detalle a bajo nivel de las cosas (y no se espera que se sepa).
+      </h2>
+      <ul>
+        <li>Demasiadas tecnologías, ámbitos, ideas...</li>
+        <li>Más especialización.</li>
+        <li>Problema: especialistas en frameworks no en ámbitos (desarrollador React vs desarrollador web).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Ventajas</h2>
+      <ul>
+        <li>Facilidad para hacer desarrollo de software. Eliminar el boilerplate.</li>
+        <li>Rapidez para diseñar/desarrollar.</li>
+        <li>Reducir la barrera de entrada a nuevos desarrolladores.</li>
+        <li>Reducción de bugs<sup>*</sup> si se usan herramientas bien mantenidas.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Ventaja<sup>*</sup></h2>
+      <p style="margin-top: 2em">Homogeneidad =&gt; Programadores reemplazables</p>
+    </section>
+
+    <section>
+      <h2>Desventajas</h2>
+      <ul>
+        <li>Desconocer implicaciones de usar una API u otra (leer fichero 20Gb en memoria vs streaming).</li>
+        <li>¿Y si la versión opinionada no vale? Falta capacidad para decidir.</li>
+        <li>Problemas de mantenibilidad si se usan malas herramientas: falta criterio para vetar.</li>
+        <li>Dificultad para depurar errores de bajo nivel<sup>*</sup>: por ejemplo, TS transpilado a JS</li>
+        <li>Dependencia de terceros.</li>
+        <li>Sobreingeniería.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Desventaja<sup>*</sup></h2>
+      <p style="margin-top: 2em">Deskiling =&gt; Programadores remplazables</p>
+    </section>
+
+    <section>
+      <h2>La formación como estudiantes</h2>
+      <ul>
+        <li>Guiada por la situación y demanda del mercado: nosotros nos formamos en J2EE.</li>
+        <li>¿Qué pasa cuando el mercado cambia?</li>
+        <li>Reciclarse o morir.</li>
+        <li>Lo importante son las ideas y los conceptos, no las técnicas/herramientas concretas.</li>
+        <li>Si es una caja negra mágica, investiga más.</li>
+        <li>Lo importante es saber lo que hay para poder profundizar cuando lo necesites.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>
+        La web y el desarrollo web acentúa todos los males.
+      </h2>
+      <ul>
+        <li>La web es ubicua.</li>
+        <li>Basada en una infinidad de estándares y especificaciones.</li>
+        <li>Specs vs implementadores: los browsers.</li>
+        <li>Problema: desarrollador framework _ponga aquí su framework_ vs desarrollador web</li>
+      </ul>
+    </section>
+
+    <section class="center">
+      <h2>
+        No tendría por qué ser así. Especialmente con la web.
+      </h2>
+    </section>
+
+    <section>
+      <h2>
+        ¿Cómo virar el rumbo?
+      </h2>
+      <ul>
+        <li>¿Volver al pasado? Imposible. Pero sí recuperar hábitos del pasado.</li>
+        <li>Leer la documentación en detalle.</li>
+        <li>No depender tanto de terceros y aprender a vetar =&gt; leer código de terceros.</li>
+        <li>Usar menos herramientas: Vanilla JS.</li>
+        <li>Al final, en realidad, la web son 3 cositas: HTML, CSS, JavaScript, el DOM y alguna otra API.</li>
+      </ul>
+    </section>
+
+    <section class="black">
+      <h2>Un ejemplo práctico</h2>
+    </section>
+
+    <section>
+      <h2>El futur-ish</h2>
+      <ul>
+        <li>LLMs: Ya no se lee la doc, se pregunta a ChatGPT. Falta criterio para vetar respuestas. Alucinaciones<sup>*</sup>.</li>
+        <li>IA Agents: Virtual programmers.</li>
+        <li>Programadores humanos reemplazables.</li>
+        <li>El ecosistema actual fomenta esto.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>En resumen</h2>
+      <ul>
+        <li>Hay que usar buenas herramientas y herramientas que simplifiquen el trabajo.</li>
+        <li>Evitar la sobreingeniería. Go Vanilla.</li>
+        <li>Tener una idea de los internals de las cosas.</li>
+        <li>No leer en diagonal la documentación.</li>
+        <li>Cuidado con los LLMs.</li>
+        <li>Está bien especializarse, pero no limitarse.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Para reflexionar</h2>
+      <ul>
+        <li>
+          Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data
+          <br/>
+          <a href="https://aclanthology.org/2020.acl-main.463.pdf"><small>https://aclanthology.org/2020.acl-main.463.pdf</small></a>
+        </li>
+        <li>
+          On the Dangers of Stochastic Parrots: Can Language Models Be Too Big? 🦜
+          <br/>
+          <a href="https://dl.acm.org/doi/10.1145/3442188.3445922"><small>https://dl.acm.org/doi/10.1145/3442188.3445922</small></a>
+        </li>
+        <li>
+          The TESCREAL bundle: Eugenics and the promise of utopia through artificial general intelligence
+          <br/>
+          <a href="https://firstmonday.org/ojs/index.php/fm/article/view/13636"><small>https://firstmonday.org/ojs/index.php/fm/article/view/13636</small></a>
+        </li>
+        <li>
+          AI: The New Aesthetics of Fascism
+          <br/>
+          <a href="https://newsocialist.org.uk/transmissions/ai-the-new-aesthetics-of-fascism/"><small>https://newsocialist.org.uk/transmissions/ai-the-new-aesthetics-of-fascism/</small></a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="black">
+      <h2>¿Preguntas?</h2>
+    </section>
+  </div>
+
+  <script>
+    const observeSectionIntersection = section => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            location.assign(`#${section.id}`);
+          }
+        })
+      }, {
+        root: document.querySelector(".container"),
+        threshold: 0.5,
+      });
+
+      observer.observe(section);
+    }
+
+    document.querySelectorAll("section").forEach((section, index) => {
+      section.id = `slide-${index}`;
+
+      observeSectionIntersection(section);
+    });
+
+    const updatePagination = () => {
+      const totalPages = document.querySelectorAll("section").length;
+      const currentPage = Number(location.hash.replace("#slide-","")) + 1;
+
+      document.getElementById("pagination").innerHTML = `${currentPage}/${totalPages}`;
+    }
+
+    updatePagination();
+    window.addEventListener("hashchange", updatePagination);
+  </script>
+  <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+	<script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+.input {
+  border: 1px solid #ccc;
+  font-size: 1.5vh;
+  padding: 0.5vh;
+  width: 50vw;
+}
+
+.input__invalid {
+  outline: 2px solid red;
+}
+
+.button {
+  background-color: #000;
+  border: 1px solid #000;
+  color: #fff;
+  font-size: 1.5vh;
+  padding: 0.5vh 1vh;
+  min-width: 16ch;
+}
+
+.button:disabled {
+  opacity: 0.3;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #666;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "fwk",
+  "version": "1.0.0",
+  "description": "Demo app",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start:frontend": "vite --port ${PORT:-4000}",
+    "start:backend": "nodemon server.js"
+  },
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "koa": "^2.14.1",
+    "koa-bodyparser": "^4.4.1",
+    "koa-router": "^13.0.1"
+  },
+  "devDependencies": {
+    "@tanstack/react-query": "^5.75.4",
+    "classnames": "^2.5.1",
+    "nodemon": "^3.1.10",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.56.2",
+    "vite": "^6.3.5"
+  }
+}

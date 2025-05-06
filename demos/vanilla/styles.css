@@ -1,0 +1,45 @@
+body {
+  font-family: 'Helvetica Neue', 'Arial Nova', Helvetica, Arial, sans-serif;
+  font-size: 2vh;
+  line-height: 3vh;
+}
+
+main {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  border: 1px solid #ccc;
+  font-size: 1.5vh;
+  padding: 0.5vh;
+  width: 50vw;
+}
+
+input:invalid:not(:placeholder-shown) {
+  outline: 2px solid red;
+}
+
+button {
+  background-color: #000;
+  border: 1px solid #000;
+  color: #fff;
+  font-size: 1.5vh;
+  padding: 0.5vh 1vh;
+  min-width: 16ch;
+}
+
+.button:disabled {
+  opacity: 0.3;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #666;
+}
+
+#feedback {
+  min-height: 2em;
+}

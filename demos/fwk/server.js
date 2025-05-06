@@ -12,7 +12,8 @@ new Koa()
   .use(
     new Router().
       post("/register", async (ctx) => {
-        await setTimeout(2000);
+        await setTimeout(2000); // Fake work!
+
         ctx.status = 200;
         ctx.body = ctx.request.body;
       })

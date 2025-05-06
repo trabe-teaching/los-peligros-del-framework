@@ -3,12 +3,6 @@ import { useForm } from "react-hook-form";
 import cn from "classnames";
 import styles from "./form.module.css";
 
-const RegisterButton = ({ disabled }) => (
-  <button className={styles.button} disabled={disabled} type="submit">
-    {disabled ? "Subscribbing..." : "Subscribe"}
-  </button>
-);
-
 export default React.forwardRef(({ onSubmit, submitting }, ref) => {
   const { register, handleSubmit, resetField, setFocus, formState: { errors } } = useForm();
 
@@ -32,10 +26,15 @@ export default React.forwardRef(({ onSubmit, submitting }, ref) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+
       <input className={cn(styles.input, {
         [styles.input__invalid]: Boolean(errors.email)
       })} {...inputProps} placeholder="Your email..." />
-      <RegisterButton disabled={submitting} />
+
+      <button className={styles.button} disabled={submitting} type="submit">
+        {submitting ? "Subscribbing..." : "Subscribe"}
+      </button>
+
     </form>
   );
 });
